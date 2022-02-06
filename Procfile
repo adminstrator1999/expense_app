@@ -1,1 +1,1 @@
-web: gunicorn expense_app.expense_app_bot.wsgi --log-file -
+web: gunicorn expense_app_bot.wsgi --log-file -
