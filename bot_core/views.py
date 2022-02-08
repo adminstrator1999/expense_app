@@ -14,18 +14,17 @@ TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "2003844522:AAGYDJ9SjC1zvqs
 
 
 class SetWebhookView(View):
-    bot = Bot(TELEGRAM_BOT_TOKEN)
 
     def get(self, request, *args, **kwargs):
-        self.bot.updater.start_webhook(listen="0.0.0.0",
-                                       port=PORT,
-                                       url_path=TELEGRAM_BOT_TOKEN,
-                                       webhook_url="https://expense-bot-kv-app.herokuapp.com/")
-        self.bot.updater.idle()
+        bot = Bot(TELEGRAM_BOT_TOKEN)
+        bot.updater.start_webhook(listen="0.0.0.0",
+                                  port=int(PORT),
+                                  url_path=TELEGRAM_BOT_TOKEN,
+                                  webhook_url="https://expense-bot-kv-app.herokuapp.com/")
         return JsonResponse({"ok": "GET request processed"})
 
     def post(self, request, *args, **kwargs):
-        bot = self.bot
+        bot = Bot(TELEGRAM_BOT_TOKEN)
         start_handler = CommandHandler('start', bot.start)
         finish_handler = CommandHandler('finish', bot.finish)
         register_handler = CommandHandler('register_yourself', bot.register_members)
@@ -46,4 +45,6 @@ class SetWebhookView(View):
         bot.dispatcher.add_handler(finish_handler)
         bot.dispatcher.add_handler(register_handler)
         bot.dispatcher.add_handler(message_log_handler)
+        bot.updater.start_polling()
+        # bot.updater.idle()
         return JsonResponse({"ok": "POST request processed"})
