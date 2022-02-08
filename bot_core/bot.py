@@ -82,11 +82,10 @@ class Bot(BotCore):
         self.token = token
         self.updater = Updater(token=self.token, use_context=True)
         self.dispatcher = self.updater.dispatcher
-        self.webhook_url = 'https://0fdc-37-110-214-250.ngrok.io'
 
-    def _set_webhook(self):
+    def set_webhook(self, webhook_url):
         response = requests.get(
-            url=f"https://api.telegram.org/bot{self.token}/setWebhook?url={self.webhook_url}/expense/")
+            url=f"https://api.telegram.org/bot{self.token}/setWebhook?url={webhook_url}/")
 
     def log_message(self, update: Update, context: CallbackContext):
         MessageLog.objects.create(group_id=update.effective_chat.id,
