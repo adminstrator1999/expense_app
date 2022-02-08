@@ -45,6 +45,6 @@ class SetWebhookView(View):
         bot.dispatcher.add_handler(finish_handler)
         bot.dispatcher.add_handler(register_handler)
         bot.dispatcher.add_handler(message_log_handler)
-        bot.updater.start_polling()
+        # bot.updater.start_polling()
         # bot.updater.idle()
         return JsonResponse({"ok": "POST request processed"})
