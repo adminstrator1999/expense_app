@@ -15,6 +15,7 @@ services:
     volumes:
       - expense_app_data:/staticfiles
     command: sh -c "python manage.py wait_for_db &&
+                    python manage.py test &&
                     sh migrate.sh &&
                     sh entrypoint.sh"
     depends_on:
