@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 import django_heroku
 
@@ -21,10 +21,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-bz#@l%9h20d&pds5qqlfpy+l2h^%&k9vg%ani(6p0z90sz-kru'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-bz#@l%9h20d&pds5qqlfpy+l2h^%&k9vg%ani(6p0z90sz-kru')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(int(os.environ.get('DEBUG', 1)))
 
 ALLOWED_HOSTS = ['*']
 
@@ -77,11 +77,11 @@ WSGI_APPLICATION = 'expense_app_bot.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'expense_bot_db',
-        'USER': 'expense_bot_user',
-        'PASSWORD': 'expense_bot_password',
-        'HOST': 'localhost',
-        'PORT': 5432
+        'NAME': os.environ.get('POSTGRES_DB', 'expense_bot_db'),
+        'USER': os.environ.get('POSTGRES_USER', 'expense_bot_user'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'expense_bot_password'),
+        'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
+        'PORT': os.environ.get('POSTGRES_PORT', 5432)
     }
 }
 

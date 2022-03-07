@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  expense_app:
+    image: expense_app_image:latest
+    container_name: expense_app_container
+    build:
+      context: .
+    expose:
+      - 8000
+    env_file:
+      - .env
+    ports:
+      - 8000:8000
+    volumes:
+      - expense_app_data:/staticfiles
+    command: sh -c "python manage.py wait_for_db &&
+                    sh migrate.sh &&
+                    sh entrypoint.sh"
+    depends_on:
+      - db
+  db:
+    container_name: expense_app_database
+    image: postgres:13-alpine
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  expense_app_data:
+  postgres_data:
